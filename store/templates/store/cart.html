@@ -1,15 +1,32 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
     <div class="row">
-    <div class="cart-card">
-
-    </div>
-
+        <div class="cart-card">
+            <a class="btn btn-outline-secondary" href="{% url 'store' %}">&#8592;Continue Shopping</a>
+            <hr>
+            <p class="totality">Item:<strong>2</strong></p>
+            <p class="totality">Total:<strong>2</strong></p>
+            <a class="btn btn-success" href="{% url 'checkout' %}" style="float:right;">Checkout</a>
+        </div>
     </div>
     <div class="row">
-    <div class="cart-card">
-
-    </div>
+        <div class="cart-card">
+            <div class="cart-row" style="font-size:17px;font-weight:bold;border-bottom: 1px solid black">
+                <div style="flex: 2"></div>
+                <div style="flex: 2">Item</div>
+                <div style="flex: 1">Price</div>
+                <div style="flex: 1">Quantity</div>
+                <div style="flex: 1">Total</div>
+            </div>
+            <div class="cart-row" style="font-size:17px;">
+                <div style="flex: 2"><img class="cart-pic" src="{% static 'images/cart_image_placeholder.png' %}"> </div>
+                <div style="flex: 2"><br>Pretty Girl</div>
+                <div style="flex: 1"><br>$99999</div>
+                <div style="flex: 1"><br>5</div>
+                <div style="flex: 1"><br>$5</div>
+            </div>
+        </div>
     </div>
 {% endblock %}

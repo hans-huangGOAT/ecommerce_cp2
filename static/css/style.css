@@ -45,9 +45,33 @@ body {
     padding: 0px;
     margin: 15px;
     width: 400px;
-    box-shadow: 0px 0px 30px hsl(0,0%, 90%);
+    box-shadow: 0px 0px 30px hsl(0, 0%, 90%);
 }
 
-.box-element{
+.cart-card {
+    background: white;
+    box-shadow: 0px 0px 30px hsl(0, 0%, 90%);
+    margin-top: 25px;
     padding: 10px;
+}
+
+.totality{
+    display: inline-block;
+    margin-right: 200px;
+    font-size: 25px;
+}
+
+.box-element {
+    padding: 10px;
+}
+
+.cart-row{
+    display: flex;
+    padding: 10px;
+    text-align: center;
+
+}
+
+.cart-pic{
+    width: 200px;
 }

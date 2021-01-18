@@ -1,5 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Checkout Page</h1>
+    <div class="col">
+        <div class="checkout-card">
+            <form id="form">
+                <div id="user-info">
+                    <div class="form-field">
+                        <input type="text" name="name" class="form-control" placeholder="Name...">
+                    </div>
+                    <div class="form-field">
+                        <input type="text" name="email" class="form-control" placeholder="E-mail...">
+                    </div>
+                </div>
+                <div id="shipping-info">
+                    <div class="form-field">
+                        <input type="text" name="address" class="form-control" placeholder="Address...">
+                    </div>
+                    <div class="form-field">
+                        <input type="text" name="city" class="form-control" placeholder="City...">
+                    </div>
+                    <div class="form-field">
+                        <input type="text" name="state" class="form-control" placeholder="State...">
+                    </div>
+                    <div class="form-field">
+                        <input type="text" name="zipcode" class="form-control" placeholder="Zipcode...">
+                    </div>
+                    <div class="form-field">
+                        <input type="text" name="country" class="form-control" placeholder="Country...">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col">
+
+    </div>
 {% endblock %}
