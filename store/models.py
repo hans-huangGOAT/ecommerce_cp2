@@ -31,6 +31,12 @@ class Order(models.Model):
     def __str__(self):
         return str(self.pk)
 
+    @property
+    def get_total_items(self):
+        orderitems = self.orderitem_set.all()
+        total = sum([orderitem.quantity for orderitem in orderitems])
+        return total
+
 
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)
