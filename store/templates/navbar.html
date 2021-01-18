@@ -8,12 +8,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'store' %}">Store</a>
         </li>
       </ul>
       <div>
           <a class="navbar-sec btn btn-warning">Login</a>
-          <a class="navbar-sec">
+          <a class="navbar-sec" href="{% url 'cart' %}">
               <img class="nav-cart" src="{% static 'images/cart.png' %}">
               <p class="nav-items">0</p>
           </a>
