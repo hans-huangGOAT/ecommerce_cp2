@@ -1,38 +1,58 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-    <div class="col">
+    <div class="row">
+    <div class="col-md-6">
         <div class="checkout-card">
             <form id="form">
+                <h5>User Information:</h5>
                 <div id="user-info">
                     <div class="form-field">
-                        <input type="text" name="name" class="form-control" placeholder="Name...">
+                        <input type="text" style="width: 220px" name="name" class="form-control" placeholder="Name...">
                     </div>
                     <div class="form-field">
-                        <input type="text" name="email" class="form-control" placeholder="E-mail...">
+                        <input type="text" style="width: 220px" name="email" class="form-control" placeholder="E-mail...">
                     </div>
                 </div>
+                <hr>
+                <h5>Shipping Information:</h5>
                 <div id="shipping-info">
                     <div class="form-field">
-                        <input type="text" name="address" class="form-control" placeholder="Address...">
+                        <input type="text" style="width: 220px" name="address" class="form-control" placeholder="Address...">
                     </div>
                     <div class="form-field">
-                        <input type="text" name="city" class="form-control" placeholder="City...">
+                        <input type="text" style="width: 220px" name="city" class="form-control" placeholder="City...">
                     </div>
                     <div class="form-field">
-                        <input type="text" name="state" class="form-control" placeholder="State...">
+                        <input type="text" style="width: 220px" name="state" class="form-control" placeholder="State...">
                     </div>
                     <div class="form-field">
-                        <input type="text" name="zipcode" class="form-control" placeholder="Zipcode...">
+                        <input type="text" style="width: 220px" name="zipcode" class="form-control" placeholder="Zipcode...">
                     </div>
                     <div class="form-field">
-                        <input type="text" name="country" class="form-control" placeholder="Country...">
+                        <input type="text" style="width: 220px" name="country" class="form-control" placeholder="Country...">
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <div class="col">
-
+    <div class="col-md-6">
+        <div class="checkout-card">
+            <a class="btn btn-outline-secondary" href="{% url 'cart' %}">&#8592;Back to Cart</a>
+            <hr>
+            <h3>Order Summary</h3>
+            <hr>
+            <div class="checkout-row">
+                <div style="flex: 2"><img class="checkout-img" src="{% static 'images/cart_image_placeholder.png' %}" ></div>
+                <div style="flex: 2"><br>Books</div>
+                <div style="flex: 1"><br>$14.99</div>
+                <div style="flex: 1"><br>x2</div>
+            </div>
+            <br>
+            <h4>Items: 2</h4>
+            <h4>Total: $99.88</h4>
+        </div>
+    </div>
     </div>
 {% endblock %}
