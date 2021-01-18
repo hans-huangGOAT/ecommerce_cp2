@@ -1,1 +1,1 @@
-alert("Fuck")
+console.log("Fuck")

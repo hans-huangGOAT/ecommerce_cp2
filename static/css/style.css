@@ -1,0 +1,32 @@
+body{
+    background: #CFD4DF;
+}
+
+.bg-dark{
+    background: #3f52d1!important;
+}
+
+.nav-cart{
+    width: 50px;
+    height: 40px;
+    display: inline-block;
+}
+
+.nav-items{
+    background: red;
+    width: 15px;
+    height: 25px;
+    color: white;
+    text-align: center;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.navbar-sec{
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.btn{
+    border-radius: 0;
+}
