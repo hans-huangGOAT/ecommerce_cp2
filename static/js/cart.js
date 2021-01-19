@@ -16,12 +16,13 @@ for (let i = 0; i < updateBtns.length; i++) {
 }
 
 function addCookieItem(product_id, action) {
-    if (cart[product_id] == null) {
+    if (cart[product_id] == undefined) {
         cart[product_id] = {'quantity': 1}
     } else {
         if (action == "add") {
             cart[product_id]['quantity']++;
-        } else {
+        }
+        if(action == "remove"){
             cart[product_id]['quantity']--;
 
             if (cart[product_id]['quantity'] <= 0) {
@@ -30,8 +31,9 @@ function addCookieItem(product_id, action) {
         }
     }
 
-    document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path/"
+    document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/"
     console.log("Cart:", cart)
+    location.reload()
 
 }
 

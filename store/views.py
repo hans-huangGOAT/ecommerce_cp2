@@ -11,7 +11,35 @@ def store(request):
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
     else:
-        order = {'get_total_items': 0, 'get_cart_total': 0}
+        orderitems = []
+        order = {'get_total_items': 0, 'get_cart_total': 0, 'shipping': False}
+        try:
+            cart = json.loads(request.COOKIES['cart'])
+        except:
+            cart = {}
+        print(cart)
+        for i in cart:
+            print(i)
+            product = Product.objects.get(id=i)
+
+            orderitem = {
+                "product": {
+                    "id": product.id,
+                    "name": product.name,
+                    "price": product.price,
+                    "digital": product.digital,
+                    "imageURL": product.imageURL,
+                },
+                'quantity': cart[i]['quantity'],
+                'get_total': cart[i]['quantity'] * product.price,
+            }
+            orderitems.append(orderitem)
+
+            if not product.digital:
+                order['shipping'] = True
+
+            order['get_cart_total'] += orderitem['get_total']
+            order['get_total_items'] += orderitem['quantity']
 
     products = Product.objects.all()
     context = {
@@ -28,11 +56,35 @@ def cart(request):
         orderitems = order.orderitem_set.all()
     else:
         orderitems = []
-        order = {'get_total_items': 0, 'get_cart_total': 0}
+        order = {'get_total_items': 0, 'get_cart_total': 0, 'shipping': False}
 
-        cart =request.COOKIES['cart']
+        try:
+            cart = json.loads(request.COOKIES['cart'])
+        except:
+            cart = {}
+        print(cart)
+        for i in cart:
+            print(i)
+            product = Product.objects.get(id=i)
 
+            orderitem = {
+                "product": {
+                    "id": product.id,
+                    "name": product.name,
+                    "price": product.price,
+                    "digital": product.digital,
+                    "imageURL": product.imageURL,
+                },
+                'quantity': cart[i]['quantity'],
+                'get_total': cart[i]['quantity'] * product.price,
+            }
+            orderitems.append(orderitem)
 
+            if not product.digital:
+                order['shipping'] = True
+
+            order['get_cart_total'] += orderitem['get_total']
+            order['get_total_items'] += orderitem['quantity']
 
     context = {
         'order': order,
@@ -49,7 +101,35 @@ def checkout(request):
         orderitems = order.orderitem_set.all()
     else:
         orderitems = []
-        order = {'get_total_items': 0, 'get_cart_total': 0}
+        order = {'get_total_items': 0, 'get_cart_total': 0, 'shipping': False}
+
+        try:
+            cart = json.loads(request.COOKIES['cart'])
+        except:
+            cart = {}
+        print(cart)
+        for i in cart:
+            print(i)
+            product = Product.objects.get(id=i)
+
+            orderitem = {
+                "product": {
+                    "id": product.id,
+                    "name": product.name,
+                    "price": product.price,
+                    "digital": product.digital,
+                    "imageURL": product.imageURL,
+                },
+                'quantity': cart[i]['quantity'],
+                'get_total': cart[i]['quantity'] * product.price,
+            }
+            orderitems.append(orderitem)
+
+            if not product.digital:
+                order['shipping'] = True
+
+            order['get_cart_total'] += orderitem['get_total']
+            order['get_total_items'] += orderitem['quantity']
 
     context = {
         'order': order,
@@ -104,5 +184,8 @@ def process_order(request):
             zipcode=shippingInfo['zipcode'],
             country=shippingInfo['country'],
         )
+
+    else:
+
 
     return JsonResponse("Order Completed!", safe=False)

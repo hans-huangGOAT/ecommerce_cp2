@@ -21,6 +21,13 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def imageURL(self):
+        try:
+            return self.image.url
+        except:
+            return ''
+
 
 class Order(models.Model):
     customer = models.ForeignKey(Customer, null=True, blank=True, on_delete=models.SET_NULL)
@@ -51,6 +58,7 @@ class Order(models.Model):
         orderitems = self.orderitem_set.all()
         total = sum([orderitem.get_total for orderitem in orderitems])
         return total
+
 
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)

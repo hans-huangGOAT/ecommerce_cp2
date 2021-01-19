@@ -22,7 +22,7 @@
             </div>
             {% for orderitem in orderitems %}
                 <div class="cart-row" style="font-size:17px;">
-                    <div style="flex: 2"><img class="cart-pic" src="{{ orderitem.product.image.url }}"></div>
+                    <div style="flex: 2"><img class="cart-pic" src="{{ orderitem.product.imageURL }}"></div>
                     <div style="flex: 2"><br>{{ orderitem.product.name }}</div>
                     <div style="flex: 1"><br>${{ orderitem.product.price|floatformat:2 }}</div>
                     <div style="flex: 1"><br>{{ orderitem.quantity }}

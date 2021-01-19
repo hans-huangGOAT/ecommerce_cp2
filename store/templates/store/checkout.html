@@ -61,7 +61,7 @@
                 <hr>
                 {% for orderitem in orderitems %}
                     <div class="checkout-row">
-                        <div style="flex: 2"><img class="checkout-img" src="{{ orderitem.product.image.url }}"></div>
+                        <div style="flex: 2"><img class="checkout-img" src="{{ orderitem.product.imageURL }}"></div>
                         <div style="flex: 2"><br>{{ orderitem.product.name }}</div>
                         <div style="flex: 1"><br>${{ orderitem.product.price|floatformat:2 }}</div>
                         <div style="flex: 1"><br>x{{ orderitem.quantity }}</div>
