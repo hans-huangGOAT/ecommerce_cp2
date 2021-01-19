@@ -15,6 +15,26 @@
 <script type="text/javascript">
     user = "{{ request.user }}"
 
+    function getCookie(name){
+        var cookieArr = document.cookie.split(";")
+
+        for(let i = 0; i < cookieArr.length; i++){
+            var cookiePair = cookieArr[i].split("=")
+            if(cookiePair[0].trim() == name){
+                return cookiePair[1]
+            }
+        }
+        return null
+    }
+
+    let cart = JSON.parse(getCookie('cart'))
+
+    if(cart == undefined){
+        cart = {}
+        document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path/"
+        console.log("Cart created!")
+    }
+
     function getToken(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {

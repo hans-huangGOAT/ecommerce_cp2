@@ -3,56 +3,153 @@
 
 {% block content %}
     <div class="row">
-    <div class="col-md-6">
-        <div class="checkout-card">
-            <form id="form">
-                <h5>User Information:</h5>
-                <div id="user-info">
-                    <div class="form-field">
-                        <input type="text" style="width: 220px" name="name" class="form-control" placeholder="Name...">
+        <div class="col-md-6">
+            <div class="checkout-card" id="form-wrapper">
+                <form id="form">
+                    <div id="user-info">
+                        <h5>User Information:</h5>
+                        <div class="form-field">
+                            <input type="text" style="width: 220px" name="name" class="form-control"
+                                   placeholder="Name...">
+                        </div>
+                        <div class="form-field">
+                            <input type="text" style="width: 220px" name="email" class="form-control"
+                                   placeholder="E-mail...">
+                        </div>
+                        <hr>
                     </div>
-                    <div class="form-field">
-                        <input type="text" style="width: 220px" name="email" class="form-control" placeholder="E-mail...">
+                    <div id="shipping-info">
+                        <h5>Shipping Information:</h5>
+
+                        <div class="form-field">
+                            <input type="text" style="width: 220px" name="address" class="form-control"
+                                   placeholder="Address...">
+                        </div>
+                        <div class="form-field">
+                            <input type="text" style="width: 220px" name="city" class="form-control"
+                                   placeholder="City...">
+                        </div>
+                        <div class="form-field">
+                            <input type="text" style="width: 220px" name="state" class="form-control"
+                                   placeholder="State...">
+                        </div>
+                        <div class="form-field">
+                            <input type="text" style="width: 220px" name="zipcode" class="form-control"
+                                   placeholder="Zipcode...">
+                        </div>
+                        <div class="form-field">
+                            <input type="text" style="width: 220px" name="country" class="form-control"
+                                   placeholder="Country...">
+                        </div>
+                        <hr>
                     </div>
-                </div>
-                <hr>
-                <h5>Shipping Information:</h5>
-                <div id="shipping-info">
-                    <div class="form-field">
-                        <input type="text" style="width: 220px" name="address" class="form-control" placeholder="Address...">
+                    <div class="d-grid gap-2">
+                        <input type="submit" id="confirm-info" value="Continue" class="btn btn-success">
                     </div>
-                    <div class="form-field">
-                        <input type="text" style="width: 220px" name="city" class="form-control" placeholder="City...">
-                    </div>
-                    <div class="form-field">
-                        <input type="text" style="width: 220px" name="state" class="form-control" placeholder="State...">
-                    </div>
-                    <div class="form-field">
-                        <input type="text" style="width: 220px" name="zipcode" class="form-control" placeholder="Zipcode...">
-                    </div>
-                    <div class="form-field">
-                        <input type="text" style="width: 220px" name="country" class="form-control" placeholder="Country...">
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="checkout-card">
-            <a class="btn btn-outline-secondary" href="{% url 'cart' %}">&#8592;Back to Cart</a>
-            <hr>
-            <h3>Order Summary</h3>
-            <hr>
-            <div class="checkout-row">
-                <div style="flex: 2"><img class="checkout-img" src="{% static 'images/cart_image_placeholder.png' %}" ></div>
-                <div style="flex: 2"><br>Books</div>
-                <div style="flex: 1"><br>$14.99</div>
-                <div style="flex: 1"><br>x2</div>
+                </form>
             </div>
-            <br>
-            <h4>Items: 2</h4>
-            <h4>Total: $99.88</h4>
+            <div class="checkout-card hidden" id="payment-field">
+                <p>Payment Method</p>
+                <button id="make-payment">Make Payment</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="checkout-card">
+                <a class="btn btn-outline-secondary" href="{% url 'cart' %}">&#8592;Back to Cart</a>
+                <hr>
+                <h3>Order Summary</h3>
+                <hr>
+                {% for orderitem in orderitems %}
+                    <div class="checkout-row">
+                        <div style="flex: 2"><img class="checkout-img" src="{{ orderitem.product.image.url }}"></div>
+                        <div style="flex: 2"><br>{{ orderitem.product.name }}</div>
+                        <div style="flex: 1"><br>${{ orderitem.product.price|floatformat:2 }}</div>
+                        <div style="flex: 1"><br>x{{ orderitem.quantity }}</div>
+                    </div>
+                {% endfor %}
+                <br>
+                <h4>Items: {{ order.get_total_items }}</h4>
+                <h4>Total: ${{ order.get_cart_total }}</h4>
+            </div>
         </div>
     </div>
-    </div>
+
+    <script type="text/javascript">
+        let shipping = '{{ order.shipping }}'
+        let total = '{{ order.get_cart_total }}'
+
+        if (user != "AnonymousUser") {
+            document.getElementById("user-info").classList.add("hidden")
+        }
+
+        if (shipping == "False") {
+            document.getElementById("shipping-info").classList.add("hidden")
+        }
+
+        var form = document.getElementById("form")
+
+        if (shipping == "False" && user != "AnonymousUser") {
+            document.getElementById("form-wrapper").classList.add("hidden")
+            document.getElementById("payment-field").classList.remove("hidden")
+        } else {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault()
+                document.getElementById("confirm-info").classList.add("hidden")
+                document.getElementById("payment-field").classList.remove("hidden")
+            })
+        }
+
+        document.getElementById("make-payment").addEventListener("click", () => {
+            submitFormData()
+        })
+
+        function submitFormData(){
+            let userFormData = {
+                'name': null,
+                'email': null,
+                'total': total,
+            }
+
+            let shippingFormData = {
+                'address': null,
+                'city': null,
+                'state': null,
+                'zipcode': null,
+                'country': null,
+            }
+
+            if(shipping != 'False'){
+                shippingFormData.address = form.address.value
+                shippingFormData.city = form.city.value
+                shippingFormData.state = form.state.value
+                shippingFormData.zipcode = form.zipcode.value
+                shippingFormData.country = form.country.value
+            }
+
+            if(user != 'AnonymousUser'){
+                userFormData.name = form.name.value
+                userFormData.email = form.email.value
+            }
+
+            url = '/process_order/'
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken,
+                },
+                body: JSON.stringify({
+                    'form': userFormData,
+                    'shipping': shippingFormData,
+                })
+            }).then(response => response.json())
+            .then(data => {
+                console.log("Success: ", data)
+                alert("Transaction Completed!")
+                location.href = "{% url 'store' %}"
+            })
+        }
+
+
+    </script>
 {% endblock %}

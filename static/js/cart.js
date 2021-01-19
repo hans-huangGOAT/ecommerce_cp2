@@ -9,8 +9,30 @@ for (let i = 0; i < updateBtns.length; i++) {
 
         if (user != "AnonymousUser") {
             addItemToCart(product_id, action)
+        } else {
+            addCookieItem(product_id, action)
         }
     })
+}
+
+function addCookieItem(product_id, action) {
+    if (cart[product_id] == null) {
+        cart[product_id] = {'quantity': 1}
+    } else {
+        if (action == "add") {
+            cart[product_id]['quantity']++;
+        } else {
+            cart[product_id]['quantity']--;
+
+            if (cart[product_id]['quantity'] <= 0) {
+                delete cart[product_id]
+            }
+        }
+    }
+
+    document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path/"
+    console.log("Cart:", cart)
+
 }
 
 

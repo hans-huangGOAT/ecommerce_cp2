@@ -82,7 +82,6 @@ body {
 }
 
 .checkout-card{
-    display: inline-block;
     background: white;
     box-shadow: 0px 0px 17px hsl(0,0%, 90%);
     padding: 10px;
@@ -97,4 +96,23 @@ body {
 .checkout-row{
     display: flex;
     margin: 10px;
+}
+
+#make-payment{
+    display: inline-block;
+}
+
+.hidden{
+    display: none;
+}
+
+.chg-quantity-block{
+    display: inline-block;
+}
+
+.chg-quantity{
+    width: 15px;
+    height: 15px;
+    padding: 2px;
+    display: list-item;
 }

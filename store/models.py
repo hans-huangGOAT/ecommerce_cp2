@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Customer(models.Model):
-    name = models.CharField(max_length=200, blank=True)
-    email = models.CharField(max_length=200, blank=True)
+    name = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -32,11 +32,25 @@ class Order(models.Model):
         return str(self.pk)
 
     @property
+    def shipping(self):
+        shipping = False
+        orderitems = self.orderitem_set.all()
+        for orderitem in orderitems:
+            if not orderitem.product.digital:
+                shipping = True
+        return shipping
+
+    @property
     def get_total_items(self):
         orderitems = self.orderitem_set.all()
         total = sum([orderitem.quantity for orderitem in orderitems])
         return total
 
+    @property
+    def get_cart_total(self):
+        orderitems = self.orderitem_set.all()
+        total = sum([orderitem.get_total for orderitem in orderitems])
+        return total
 
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)
@@ -47,12 +61,17 @@ class OrderItem(models.Model):
     def __str__(self):
         return self.product.name
 
+    @property
+    def get_total(self):
+        total = self.product.price * self.quantity
+        return total
+
 
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(Customer, null=True, blank=True, on_delete=models.SET_NULL)
     order = models.ForeignKey(Order, null=True, blank=True, on_delete=models.SET_NULL)
-    address = models.CharField(max_length=200, blank=True)
-    city = models.CharField(max_length=200, blank=True)
+    address = models.CharField(max_length=200)
+    city = models.CharField(max_length=200)
     state = models.CharField(max_length=200, null=True, blank=True)
     country = models.CharField(max_length=200, null=True, blank=True)
     zipcode = models.CharField(max_length=200, null=True, blank=True)
