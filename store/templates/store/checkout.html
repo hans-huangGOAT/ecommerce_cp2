@@ -50,7 +50,7 @@
             </div>
             <div class="checkout-card hidden" id="payment-field">
                 <p>Payment Method</p>
-                <button id="make-payment">Make Payment</button>
+                <div id="paypal-button-container"></div>
             </div>
         </div>
         <div class="col-md-6">
@@ -73,10 +73,44 @@
             </div>
         </div>
     </div>
+     <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+
+     <script>
+             let total = '{{ order.get_cart_total }}'
+
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            style:{
+                color: 'gold',
+                shape: 'pill',
+            },
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: total
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    submitFormData()
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script>
 
     <script type="text/javascript">
         let shipping = '{{ order.shipping }}'
-        let total = '{{ order.get_cart_total }}'
 
         if (user != "AnonymousUser") {
             document.getElementById("user-info").classList.add("hidden")
@@ -99,11 +133,11 @@
             })
         }
 
-        document.getElementById("make-payment").addEventListener("click", () => {
-            submitFormData()
-        })
+        {# document.getElementById("make-payment").addEventListener("click", () => {#}
+        {#    submitFormData()#}
+        {# })#}
 
-        function submitFormData(){
+        function submitFormData() {
             let userFormData = {
                 'name': null,
                 'email': null,
@@ -118,7 +152,7 @@
                 'country': null,
             }
 
-            if(shipping != 'False'){
+            if (shipping != 'False') {
                 shippingFormData.address = form.address.value
                 shippingFormData.city = form.city.value
                 shippingFormData.state = form.state.value
@@ -126,7 +160,7 @@
                 shippingFormData.country = form.country.value
             }
 
-            if(user != 'AnonymousUser'){
+            if (user == 'AnonymousUser') {
                 userFormData.name = form.name.value
                 userFormData.email = form.email.value
             }
@@ -143,11 +177,15 @@
                     'shipping': shippingFormData,
                 })
             }).then(response => response.json())
-            .then(data => {
-                console.log("Success: ", data)
-                alert("Transaction Completed!")
-                location.href = "{% url 'store' %}"
-            })
+                .then(data => {
+                    console.log("Success: ", data)
+                    alert("Transaction Completed!")
+
+                    cart = {}
+                    document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/"
+
+                    location.href = "{% url 'store' %}"
+                })
         }
 
 

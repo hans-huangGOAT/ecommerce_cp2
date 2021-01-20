@@ -4,16 +4,19 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Customer(models.Model):
-    name = models.CharField(max_length=200)
-    email = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, null=True, blank=True)
+    email = models.CharField(max_length=200, null=True, blank=True)
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        try:
+            return self.name
+        except:
+            return "error Name"
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=200, blank=True)
+    name = models.CharField(max_length=200,null=True, blank=True)
     price = models.DecimalField(max_digits=9, decimal_places=2, null=True, blank=True)
     image = models.ImageField(default='cart_image_placeholder.png', null=True, blank=True)
     digital = models.BooleanField(default=False, null=True, blank=True)
@@ -78,8 +81,8 @@ class OrderItem(models.Model):
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(Customer, null=True, blank=True, on_delete=models.SET_NULL)
     order = models.ForeignKey(Order, null=True, blank=True, on_delete=models.SET_NULL)
-    address = models.CharField(max_length=200)
-    city = models.CharField(max_length=200)
+    address = models.CharField(max_length=200, null=True, blank=True)
+    city = models.CharField(max_length=200, null=True, blank=True)
     state = models.CharField(max_length=200, null=True, blank=True)
     country = models.CharField(max_length=200, null=True, blank=True)
     zipcode = models.CharField(max_length=200, null=True, blank=True)
